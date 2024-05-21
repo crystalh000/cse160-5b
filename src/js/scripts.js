@@ -158,11 +158,33 @@ scene.add(skybox);
 const ambientLight = new THREE.AmbientLight(0xFFFFFF,2.0);
 scene.add(ambientLight);
 
+// adding a directional light
 const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1.0);
 scene.add(directionalLight);
 directionalLight.position.set(0,10,10);
 directionalLight.castShadow = true;
 directionalLight.shadow.camera.bottom = -12;
+
+//  adding a point light
+// Adding a point light for fairy
+const pl = new THREE.PointLight(0xffffff, 2, 1000, 2);
+pl.position.set(0, 100, 0); // Position the light above the scene
+const plHelper = new THREE.PointLightHelper(pl, 1);
+scene.add(pl, plHelper);
+
+
+// point light gui
+// const plSettings = {
+//     visible: true,
+//     color: sl.color.getHex(),
+// };
+
+// const plFolder = gui.addFolder('Point Light');
+// plFolder.add(plSettings, 'visible').onChange(() => {
+//     pl.visible = value;
+//     plHelper.visible = value;
+// });
+// plFolder.add(pl, 'intensity',0,2,0.25 );
 
 // const dLightHelper = new THREE.DirectionalLightHelper(directionalLight,5);
 // scene.add(dLightHelper);

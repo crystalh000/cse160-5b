@@ -142,7 +142,7 @@ directionalLight.shadow.camera.bottom = -12;
 //adding a point light
 const pl = new THREE.PointLight(0xffffff, 1, 8, 2);
 pl.castShadow = true; // Enable shadows for this light
-pl.position.set(2, 2, 2); // Position the light above the scene
+pl.position.set(-70, 10, 2); // Position the light above the scene
 const plHelper = new THREE.PointLightHelper(pl, 0.5);
 scene.add(pl, plHelper);
 // const pl = new THREE.PointLight(0xffffff, 1, 100, 2); // Increased distance

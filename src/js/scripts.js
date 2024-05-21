@@ -28,19 +28,7 @@ document.body.appendChild( renderer.domElement );
 // Creating a new scene
 const scene = new THREE.Scene();
 // Creating a perspective camera with a field of view of 75, aspect ratio based on window size, and near and far clipping plane
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-
-// Load the cube texture
-// Load the cube texture
-// const cubeTexture = loader.load(urls, function() {
-//     // This function will be called when the load completes
-//     console.log('Load complete');
-//   }, undefined, function(error) {
-//     // This function will be called if an error occurs
-//     console.log('An error occurred while loading the images', error);
-//   });
-
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 2000 );
 
 // Creating orbit controls for the camera
 const orbit = new OrbitControls(camera, renderer.domElement);
@@ -112,20 +100,6 @@ sphere3.position.set(-10, 10,0);
 sphere3.castShadow = true;
 
 // adding skybox
-// let skyboxArray = [];
-// let texture_back = new THREE.TextureLoader().load( '../assets/Daylight Box_Back.bmp');
-// let texture_bottom = new THREE.TextureLoader().load( '../assets/Daylight Box_Bottom.bmp');
-// let texture_front = new THREE.TextureLoader().load( '../assets/Daylight Box_Front.bmp');
-// let texture_left = new THREE.TextureLoader().load( '../assets/Daylight Box_Left.bmp');
-// let texture_right = new THREE.TextureLoader().load( '../assets/Daylight Box_Right.bmp');
-// let texture_top = new THREE.TextureLoader().load( '../assets/Daylight Box_Top.bmp');
-
-// skyboxArray.push(new THREE.MeshBasicMaterial({map: texture_back}));
-// skyboxArray.push(new THREE.MeshBasicMaterial({map: texture_bottom}));
-// skyboxArray.push(new THREE.MeshBasicMaterial({map: texture_front}));
-// skyboxArray.push(new THREE.MeshBasicMaterial({map: texture_left}));
-// skyboxArray.push(new THREE.MeshBasicMaterial({map: texture_right}));
-// skyboxArray.push(new THREE.MeshBasicMaterial({map: texture_top}));
 let skyboxArray = [
     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('../assets/Daylight Box_Right.bmp'), side: THREE.BackSide }),
     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('../assets/Daylight Box_Left.bmp'), side: THREE.BackSide }),
@@ -165,94 +139,19 @@ directionalLight.position.set(0,10,10);
 directionalLight.castShadow = true;
 directionalLight.shadow.camera.bottom = -12;
 
-//  adding a point light
-// Adding a point light for fairy
-const pl = new THREE.PointLight(0xffffff, 2, 1000, 2);
-pl.position.set(0, 100, 0); // Position the light above the scene
-const plHelper = new THREE.PointLightHelper(pl, 1);
+//adding a point light
+const pl = new THREE.PointLight(0xffffff, 1, 8, 2);
+pl.castShadow = true; // Enable shadows for this light
+pl.position.set(2, 2, 2); // Position the light above the scene
+const plHelper = new THREE.PointLightHelper(pl, 0.5);
 scene.add(pl, plHelper);
-
-
-// point light gui
-// const plSettings = {
-//     visible: true,
-//     color: sl.color.getHex(),
-// };
-
-// const plFolder = gui.addFolder('Point Light');
-// plFolder.add(plSettings, 'visible').onChange(() => {
-//     pl.visible = value;
-//     plHelper.visible = value;
-// });
-// plFolder.add(pl, 'intensity',0,2,0.25 );
-
-// const dLightHelper = new THREE.DirectionalLightHelper(directionalLight,5);
-// scene.add(dLightHelper);
-
-// const dLightShadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-// scene.add(dLightShadowHelper);
-
-// Adding fog
-// scene.fog = new THREE.Fog(0xFFFFFF, 10, 200);
-
-// const spotLight = new THREE.SpotLight(0xFFFFFF, 1.5);
-// scene.add(spotLight);
-// spotLight.position.set(-100,100,0);
-// spotLight.castShadow = true;
-
-// // Set the spotlight target to the target object
-// spotLight.target = target;
-
-// const spotLightHelper = new THREE.SpotLightHelper(spotLight);
-// scene.add(spotLightHelper);
-// const textureLoader = new THREE.TextureLoader();
+// const pl = new THREE.PointLight(0xffffff, 1, 100, 2); // Increased distance
+// pl.position.set(0, 45, -5);
+// const plHelper = new THREE.PointLightHelper(pl, 0.5);
+// scene.add(pl, plHelper);
 
 
 //scene.background = textureLoader.load(sky);
-
-// const cubeTextureLoader = new THREE.CubeTextureLoader();
-// scene.background= cubeTextureLoader.load([
-//     sky,
-//     sky,
-//     sky,
-//     sky,
-//     sky,
-//     sky
-// ]);
-
-// const box2Geometry = new THREE.BoxGeometry(4,4,4);
-// const box2Material = new THREE.MeshStandardMaterial({
-//     // color: 0x00FF00
-//     map: textureLoader.load(flowers)
-// });
-
-// const box2 = new THREE.Mesh(box2Geometry, box2Material);
-// scene.add(box2);
-// box2.position.set(-45,-15,10);
-
-// const sphere2Geometry = new THREE.SphereGeometry(4);
-
-// const vShader = `
-//     void main() {
-//         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-//     }   
-// `;
-
-// const fShader = `
-//     void main() {
-//         gl_FragColor = vec4(0.5, 0.5, 1.0, 1.0);
-//     }
-// `;
-
-// const sphere2Material = new THREE.ShaderMaterial({
-//     vertexShader: document.getElementById('vertexShader').textContent,
-//     fragmentShader:document.getElementById('fragmentShader').textContent
-
-// });
-
-// const sphere2 = new THREE.Mesh(sphere2Geometry, sphere2Material);
-// scene.add(sphere2);
-// sphere2.position.set(-5,10,10);
 
 
 // Load the GLTF model
@@ -289,28 +188,6 @@ assetLoader.load(airplaneURL.href, function(gltf) {
     console.error(error);
 });
 
-
-
-// // Load the Obj Model
-// const objLoader = new OBJLoader();
-
-// objLoader.load('assets/floating-islands/island_scene_flattened.obj', (root) => {
-//     scene.add(root);
-// });
-
-// const mtlLoader = new MTLLoader();
-// mtlLoader.load('assets/floating-islands/island_scene_flattened.mtl', (mtl) => {
-//     mtl.preload();
-//     objLoader.setMaterials(mtl);
-//     objLoader.load('assets/floating-islands/island_scene_flattened.obj', (root) => {
-//       scene.add(root);
-//     });
-// });
-
-
-
-
-
 const gui = new dat.GUI();
 const options = {
     sphereColor: '#ffea00',
@@ -328,33 +205,9 @@ gui.addColor(options, 'sphereColor').onChange(() => {
 
 gui.add(options,'speed',0,0.1);
 
-// Load the cube texture
-// Load the cube texture
-// Load the cube texture
-// const cubeTexture = loader.load(urls, function() {
-//     // This function will be called when the load completes
-//     console.log('Load complete');
-//     // Set the scene's background to the cube texture
-//     scene.background = cubeTexture;
-//   }, undefined, function(error) {
-//     // This function will be called if an error occurs
-//     console.log('An error occurred while loading the images', error);
-//   });
 // // Rendering the scene with the camera
 renderer.render( scene, camera );
 
-// // Load the cube texture
-// const cubeTexture = loader.load(urls, function() {
-//     // This function will be called when the load completes
-//     console.log('Load complete');
-//     // Set the scene's background to the cube texture
-//     scene.background = cubeTexture;
-//     // Start the animation loop
-//     renderer.setAnimationLoop( animate );
-//   }, undefined, function(error) {
-//     // This function will be called if an error occurs
-//     console.log('An error occurred while loading the images', error);
-//   });
 
 let step = 0;
 

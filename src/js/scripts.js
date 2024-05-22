@@ -81,16 +81,24 @@ scene.add( diamond );
 // sphere.castShadow = true;
 
 // adding 100 + objects using instanced rendering from Wael Yasmina tutorial
+
+const waterfallGroup = new THREE.Group();
+
 const waterfall = new THREE.IcosahedronGeometry();
-const material = new THREE.MeshPhongMaterial({color: 0x6495ED});
+const material = new THREE.MeshPhongMaterial({color: 0x4682B4});
 const mesh = new THREE.InstancedMesh(waterfall, material, 300);
-scene.add(mesh);
+waterfallGroup.add(mesh);
+//scene.add(mesh);
+scene.add(waterfallGroup);
+
+waterfallGroup.position.set(-70, -37, 41); // example translation
+waterfallGroup.scale.set(0.1, 0.1, 0.1); // example translation
 const dummy = new THREE.Object3D();
 
 for (let i = 0; i < 300; i++) {
-    dummy.position.x = Math.random() * 40 - 20;
+    dummy.position.x = Math.random() * 5 - 5;
     dummy.position.y = Math.random() * 40 - 20;
-    dummy.position.z = Math.random() * 40 - 20;
+    dummy.position.z = Math.random() * 5 - 5;
 
     dummy.rotation.x = Math.random() * 2 * Math.PI;
     dummy.rotation.y = Math.random() * 2 * Math.PI;
@@ -100,7 +108,7 @@ for (let i = 0; i < 300; i++) {
     
     dummy.updateMatrix();
     mesh.setMatrixAt(i, dummy.matrix);
-    mesh.setColorAt(i, new THREE.Color(Math.random() * 0x0096FF));
+    //mesh.setColorAt(i, new THREE.Color(Math.random() * 0x008080));
 }
 
 const sphereGeometry = new THREE.SphereGeometry(2, 4, 4);

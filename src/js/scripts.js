@@ -83,11 +83,17 @@ scene.add( diamond );
 // adding 100 + objects using instanced rendering from Wael Yasmina tutorial
 
 const waterfallGroup = new THREE.Group();
-
+const waterfall2 = new THREE.SphereGeometry();
 const waterfall = new THREE.IcosahedronGeometry();
-const material = new THREE.MeshPhongMaterial({color: 0x4682B4});
+const material = new THREE.MeshPhongMaterial({color: 0x4682B4,opacity: 0.8, transparent: true} );
+const material2 = new THREE.MeshPhongMaterial({color: 0x4682B4} );
+
 const mesh = new THREE.InstancedMesh(waterfall, material, 300);
+const mesh2 = new THREE.InstancedMesh(waterfall2, material2, 300);
+
 waterfallGroup.add(mesh);
+waterfallGroup.add(mesh2);
+
 //scene.add(mesh);
 scene.add(waterfallGroup);
 
@@ -109,6 +115,22 @@ for (let i = 0; i < 300; i++) {
     dummy.updateMatrix();
     mesh.setMatrixAt(i, dummy.matrix);
     //mesh.setColorAt(i, new THREE.Color(Math.random() * 0x008080));
+}
+
+
+for (let i = 0; i < 300; i++) {
+    dummy.position.x = Math.random() * 5 - 5;
+    dummy.position.y = Math.random() * 40 - 20;
+    dummy.position.z = Math.random() * 5 - 5;
+
+    dummy.rotation.x = Math.random() * 2 * Math.PI;
+    dummy.rotation.y = Math.random() * 2 * Math.PI;
+    dummy.rotation.z = Math.random() * 2 * Math.PI;
+
+    dummy.scale.x = dummy.scale.y = dummy.scale.z = Math.random() * 0.2;
+    
+    dummy.updateMatrix();
+    mesh2.setMatrixAt(i, dummy.matrix); // Set the matrix for mesh2
 }
 
 const sphereGeometry = new THREE.SphereGeometry(2, 4, 4);
@@ -283,9 +305,6 @@ function animate(time) {
         const radius = 100;
         plane.position.x = radius * Math.cos(time / 2000);
         plane.position.z = radius * Math.sin(time / 2000);
-        
-
-
     }
 
 
@@ -310,7 +329,29 @@ function animate(time) {
         dummy.updateMatrix();
         mesh.setMatrixAt(i, dummy.matrix);
     }
+
+    // Loop for the spheres
+    for (let i = 0; i < 300; i++) {
+        mesh2.getMatrixAt(i, matrix);
+        matrix.decompose(dummy.position, dummy.rotation, dummy.scale);
+        
+        // Make the spheres fall down
+        dummy.position.y -= 0.1;
+        
+        // If the sphere has fallen below a certain point, reset its position to the top
+        if (dummy.position.y < -20) {
+            dummy.position.y = 20;
+        }
+        
+        dummy.rotation.x = i/1000 * time/ 1000;
+        dummy.rotation.y = i/10000 * time / 500;
+        dummy.rotation.z = i/1000 * time / 1200;
+
+        dummy.updateMatrix();
+        mesh2.setMatrixAt(i, dummy.matrix);
+    }
     mesh.instanceMatrix.needsUpdate = true;
+    mesh2.instanceMatrix.needsUpdate = true; // Update the instance matrix for mesh2
 
 
     renderer.render( scene, camera );

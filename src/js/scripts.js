@@ -16,6 +16,8 @@ const airplaneURL = new URL('../assets/Airplane.glb', import.meta.url);
 // Low poly floating islands by vanAchen [CC-BY] via Poly Pizza
 // Airplane by Poly by Google [CC-BY] via Poly Pizza
 
+// Waterfall by Poly by Google [CC-BY] via Poly Pizza
+
 // Creating a WebGL renderer
 const renderer = new THREE.WebGLRenderer();
 // adding shadows
@@ -76,6 +78,29 @@ scene.add( diamond );
 // scene.add(sphere);
 // sphere.position.set(-10, 10,0);
 // sphere.castShadow = true;
+
+// adding 100 + objects using instanced rendering from Wael Yasmina tutorial
+const waterfall = new THREE.IcosahedronGeometry();
+const material = new THREE.MeshPhongMaterial({color: 0x6495ED});
+const mesh = new THREE.InstancedMesh(waterfall, material, 300);
+scene.add(mesh);
+const dummy = new THREE.Object3D();
+
+for (let i = 0; i < 300; i++) {
+    dummy.position.x = Math.random() * 40 - 20;
+    dummy.position.y = Math.random() * 40 - 20;
+    dummy.position.z = Math.random() * 40 - 20;
+
+    dummy.rotation.x = Math.random() * 2 * Math.PI;
+    dummy.rotation.y = Math.random() * 2 * Math.PI;
+    dummy.rotation.z = Math.random() * 2 * Math.PI;
+
+    dummy.scale.x = dummy.scale.y = dummy.scale.z = Math.random();
+    
+    dummy.updateMatrix();
+    mesh.setMatrixAt(i, dummy.matrix);
+    mesh.setColorAt(i, new THREE.Color(Math.random() * 0x0096FF));
+}
 
 const sphereGeometry = new THREE.SphereGeometry(2, 4, 4);
 
@@ -212,6 +237,7 @@ renderer.render( scene, camera );
 let step = 0;
 
 // Function to animate the box
+const matrix = new THREE.Matrix4();
 function animate(time) {
     // Rotating the box in x and y direction based on time
     diamond.rotation.y = time / 1000;
@@ -236,6 +262,30 @@ function animate(time) {
 
 
     }
+
+
+    for (let i = 0; i < 300; i++) {
+        mesh.getMatrixAt(i, matrix);
+        matrix.decompose(dummy.position, dummy.rotation, dummy.scale);
+        
+        // Make the cubes fall down
+        dummy.position.y -= 0.1;
+        
+        // If the cube has fallen below a certain point, reset its position to the top
+        if (dummy.position.y < -20) {
+            dummy.position.y = 20;
+        }
+        
+        dummy.rotation.x = i/1000 * time/ 1000;
+        dummy.rotation.y = i/10000 * time / 500;
+        dummy.rotation.z = i/1000 * time / 1200;
+
+        // dummy.scale.x = dummy.scale.y = dummy.scale.z = Math.random();
+        
+        dummy.updateMatrix();
+        mesh.setMatrixAt(i, dummy.matrix);
+    }
+    mesh.instanceMatrix.needsUpdate = true;
 
 
     renderer.render( scene, camera );

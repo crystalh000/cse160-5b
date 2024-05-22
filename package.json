@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "predeploy": "npx vite build",
+    "deploy": "gh-pages -d dist",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "dat.gui": "^0.7.9",
+    "three": "^0.163.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "gh-pages": "^6.1.1",
+    "vite": "^5.2.10"
+  }
+}

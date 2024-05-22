@@ -12,8 +12,9 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const islandURL = new URL('../assets/floating-islands.glb', import.meta.url);
 const airplaneURL = new URL('../assets/Airplane.glb', import.meta.url);
-
+const waterfallURL = new URL('../assets/Waterfall.glb', import.meta.url);
 // Low poly floating islands by vanAchen [CC-BY] via Poly Pizza
+
 // Airplane by Poly by Google [CC-BY] via Poly Pizza
 
 // Waterfall by Poly by Google [CC-BY] via Poly Pizza
@@ -212,6 +213,22 @@ assetLoader.load(airplaneURL.href, function(gltf) {
 }, undefined, function(error) {
     console.error(error);
 });
+
+// load the waterfall model
+let waterfallObj; 
+assetLoader.load(waterfallURL.href, function(gltf) {
+    waterfallObj = gltf.scene;
+    scene.add(waterfallObj);
+    // Adjust the size of the model
+    waterfallObj.scale.set(0.07, 0.07, 0.07); // Adjust as needed
+
+    // Adjust the position of the model
+    waterfallObj.position.set(-70, -17, 32); // Adjust as needed
+    waterfallObj.rotation.y -= 0.5; // Adjust as needed
+}, undefined, function(error) {
+    console.error(error);
+});
+
 
 const gui = new dat.GUI();
 const options = {

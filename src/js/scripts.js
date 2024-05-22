@@ -92,7 +92,7 @@ waterfallGroup.add(mesh);
 scene.add(waterfallGroup);
 
 waterfallGroup.position.set(-70, -37, 41); // example translation
-waterfallGroup.scale.set(0.1, 0.1, 0.1); // example translation
+// waterfallGroup.scale.set(0.1, 0.1, 0.1); // example translation
 const dummy = new THREE.Object3D();
 
 for (let i = 0; i < 300; i++) {
@@ -104,7 +104,7 @@ for (let i = 0; i < 300; i++) {
     dummy.rotation.y = Math.random() * 2 * Math.PI;
     dummy.rotation.z = Math.random() * 2 * Math.PI;
 
-    dummy.scale.x = dummy.scale.y = dummy.scale.z = Math.random();
+    dummy.scale.x = dummy.scale.y = dummy.scale.z = Math.random() * 0.4;
     
     dummy.updateMatrix();
     mesh.setMatrixAt(i, dummy.matrix);
